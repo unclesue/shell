@@ -1,10 +1,18 @@
 #!/bin/bash
+# USAGE
+# fetch_release_asset <filename> <org/repo> <version or 'latest'> [<github token>] [<target>]
+set -e
+
+if [ $# -lt 3 ] ;then
+    echo "Usage: <filename> <org/repo> <version or 'latest'> [<github token>] [<target>]"
+    exit 1
+fi
 
 FILE=${1:?"Missing file input in the action"}
 REPO=${2:?"Missing repo input in the action"}
-TOKEN=${3}
-TARGET=${4:-$1}
-VERSION=${5:-'latest'}
+VERSION=${3:-'latest'}
+TOKEN="${4}"
+TARGET=${5:-$1}
 
 API_URL="https://api.github.com/repos/$REPO"
 RELEASE_DATA=$(curl ${TOKEN:+"-H"} ${TOKEN:+"Authorization: token ${TOKEN}"} \
